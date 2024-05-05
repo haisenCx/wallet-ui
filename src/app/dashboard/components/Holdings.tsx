@@ -43,7 +43,7 @@ export default function Holdings() {
   }, [currentBalance]);
   console.log(holdingList);
   return (
-    <div className="w-full px-2">
+    <div className="w-full ">
       {holdingList?.map((item, index) => (
         <Item key={index} data={item}></Item>
       ))}
@@ -61,7 +61,9 @@ function Item({ data }: { data: ITokenBalance & IToken }) {
     route.push(`/holdings/${currentChain?.name}/${data.name}`);
   }
   return (
-    <div className="flex items-center justify-between py-4">
+    <div className="flex items-center justify-between py-4 hover:bg-[#819DF54D] cursor-pointer px-4 rounded-2xl
+         active:bg-[#819DF599]"
+         onClick={() => handleToDetail(data)}>
       <div className="flex flex-1 items-center">
         <Image
           width={45}
@@ -79,7 +81,7 @@ function Item({ data }: { data: ITokenBalance & IToken }) {
             {formatValue(usdValue)} USD
           </div>
         </div>
-        <div className="py-4 px-2 cursor-pointer" onClick={() => handleToDetail(data)}>
+        <div className="py-4 px-2 cursor-pointer" >
           <LinkArrowSVG />
         </div>
       </div>
