@@ -10,7 +10,7 @@ import sourceChainSenderAbi from "sw-fe-sdk/dist/data/SourceChainSender";
 
 import Toast from "./toast";
 import { CrossTx } from "@/api/crossChain";
-import { ITransactionRecord } from "@/api/types/transactionRecord";
+import { ITransactionRecord, TxTypeEnum } from "@/api/types/transactionRecord";
 
 export async function complexTransfer(ops: any[]) {
   const params = [];
@@ -97,7 +97,7 @@ export async function complexTransfer(ops: any[]) {
       });
 
       extraData.push({
-        type: "swap",
+        type: TxTypeEnum.SWAP,
         dex: dex,
         source_token_name: source_token,
         source_token_id: finTokenIn?.tokenId!,
@@ -170,7 +170,7 @@ export async function complexTransfer(ops: any[]) {
         payGasFeeTokenAddress = feeToken?.address;
       }
       extraData.push({
-        type: "internalTransfer",
+        type: TxTypeEnum.INTERNAL_TRANSFER,
         from_address: walletAddress,
         to_name: "",
         to_address: receiver,
@@ -280,7 +280,7 @@ export async function complexTransfer(ops: any[]) {
         ]
       );
       extraData.push({
-        type: "crossChain",
+        type: TxTypeEnum.CROSS_CHAIN,
         crossId: _crossChainId, // 跨链ID，当保存跨链信息到https://cc-dev.web3idea.xyz/api/v1/cross-tx可获得该值
         source_chain_id: source_chain_id, // 源链chain id
         source_chain_name: source_chain_name, // 源链chain id

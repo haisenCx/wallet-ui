@@ -14,7 +14,7 @@ export const formatValue = (s: string): string => {
   return s;
 };
 
-export const formatValue2 = (s: string): string => {
+export const formatValue2 = (s: string|number): string => {
   return Number(s).toFixed(2);
 };
 

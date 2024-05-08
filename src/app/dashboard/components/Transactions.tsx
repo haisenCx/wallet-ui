@@ -1,5 +1,6 @@
 import ArrowUpSVG from "@/components/Icons/ArrowUp";
 import ArrowDownSVG from "@/components/Icons/ArrowDown";
+import CloseSVG from "@/components/Icons/CloseGrey";
 import LinkArrowSVG from "@/components/Icons/LinkArrow";
 import { timeToNow } from "@/utils/days";
 import { formatAddress, formatValue } from "@/utils/format";
@@ -61,15 +62,15 @@ export function TxItem(props: ItemProps) {
         <div className="flex justify-center items-center">
           {isCreate ? <UserSVG /> : (
             <>
-              {status === 1 && tradeDirection === 1 ? <ArrowUpSVG /> : ""}
-              {status === 1 && tradeDirection === 2 ? <ArrowDownSVG /> : ""}
-              {status === 0 ? <ArrowUpSVG /> : ""}
+              {(status === 1 || status === 3) && tradeDirection === 1 ? <ArrowUpSVG /> : ""}
+              {(status === 1 || status === 3) && tradeDirection === 2 ? <ArrowDownSVG /> : ""}
+              {status === 2 ? <CloseSVG /> : ""}
             </>
           )}
         </div>
-        <div className="flex flex-col">
+        <div className={status===2?"text-[#FFFFFF80] flex flex-col":'flex flex-col'}>
           <div>
-            <div>{directText}</div>
+            <div >{directText}</div>
             {isCreate ? null : <div>{formatAddress(to)}</div>}
           </div>
           <div className="text-[#819DF580]">{timeToNow(timeStamp)} ago</div>

@@ -27,7 +27,7 @@ import Toast from "@/utils/toast";
 import { formatAddress, formatValue } from "@/utils/format";
 import Person from "@/components/Person";
 import { LoadingContext } from "@/app/providers";
-import { IInternalTransferData } from "@/api/types/transactionRecord";
+import { IInternalTransferData, TxTypeEnum } from "@/api/types/transactionRecord";
 import { useRouter } from "next/navigation";
 
 function Tab({
@@ -162,7 +162,7 @@ export default function Confirmation() {
       chain: findChain,
       chainId,
       chainAddress,
-      toName: "",
+      toName: name,
     };
   }, []);
   const gasPriceRef = useRef(0);
@@ -215,7 +215,7 @@ export default function Confirmation() {
           userOperationHash: opHase,
           extraData: [
             {
-              type: "internalTransfer",
+              type: TxTypeEnum.INTERNAL_TRANSFER,
               from_address: params.walletAddress,
               to_name: transferData.name,
               to_address: params.receiveAddress,
@@ -262,9 +262,7 @@ export default function Confirmation() {
         );
         return `${total} ${transferData.token?.name} `;
       }
-      return `${transferData.amount!} ${transferData.token?.name} + ${
-        currentGasFee.needAmount
-      } ${currentGasFee.token.name}`;
+      return `${transferData.amount!} ${transferData.token?.name} + ${currentGasFee.needAmount} ${currentGasFee.token.name}`;
     }
     return "";
   }, [currentGasFee, transferData]);
@@ -333,9 +331,7 @@ export default function Confirmation() {
                 needArrow={false}
                 amount={
                   transferData
-                    ? `${formatValue(transferData?.amount!)} ${
-                        transferData.token?.name
-                      }`
+                    ? `${formatValue(transferData?.amount!)} ${transferData.token?.name}`
                     : ""
                 }
                 coinValue={""}
@@ -349,9 +345,7 @@ export default function Confirmation() {
                 }}
                 amount={
                   currentGasFee
-                    ? `${formatValue(currentGasFee?.needAmount)} ${
-                        currentGasFee?.token?.name
-                      }`
+                    ? `${formatValue(currentGasFee?.needAmount)} ${currentGasFee?.token?.name}`
                     : "0"
                 }
                 coinValue={""}

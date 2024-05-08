@@ -23,13 +23,13 @@ export default function Asset(props: AssetProps) {
   };
 
   const past1HourValue = past1Hour?.value || "0";
-  const past1HourPercentage = past1Hour?.percentage || "0";
+  const past1HourPercentage = Number(past1Hour?.percentage)*100 || "0";
 
   const pastDayValue = pastDay?.value || "0";
-  const pastDayPercentage = pastDay?.percentage || "0";
+  const pastDayPercentage = (Number(pastDay?.percentage)*100 || "0") ;
 
   const past7DayValue = past7Day?.value || "0";
-  const past7DayPercentage = past7Day?.percentage || "0";
+  const past7DayPercentage = Number(past7Day?.percentage)*100 || "0";
 
   const past1HourValueIsGreaterThanZero = isGreaterThanZero(past1HourValue);
   const pastDayValueIsGreaterThanZero = isGreaterThanZero(pastDayValue);

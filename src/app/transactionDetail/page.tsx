@@ -18,7 +18,7 @@ type StatusProps = {
   time: string;
 } & StyleType;
 
-const Status = ({ type = "success", time, className }: StatusProps) => {
+const Status = ({ type, time, className }: StatusProps) => {
   const map = {
     success: {
       style: Style.success,
@@ -33,6 +33,7 @@ const Status = ({ type = "success", time, className }: StatusProps) => {
       text: "Pending",
     },
   };
+  debugger;
   const { style, text } = map[type];
   return (
     <div className={classNames(className, Style.status, style)}>
@@ -78,13 +79,16 @@ export default function TransactionDetail() {
       inName = "You";
     }
   }
+let currentStatus = transactionDetail.status == 2 ? "fail" : 
+                   transactionDetail.status == 1 ? "success" : 
+                   transactionDetail.status == 3 ? "pending" : "success";
   return (
     <MainLayout showMenu={false}>
       <div className="flex flex-col h-full">
         <Header title="Transaction Detail" showBack />
         <div className={classNames(Style.transaction)}>
           <div className="py-4">
-            <Status className="mb-4" type={transactionDetail.status===0?"fail":"success"} time={time}></Status>
+            <Status className="mb-4" type={currentStatus} time={time}></Status>
             <div className="flex items-center justify-center border-b-1 border-gray-500/30 px-4 pb-4">
               <Person name={outName} address={transactionDetail.from} />
               <div className="flex-1 flex flex-col items-center">
