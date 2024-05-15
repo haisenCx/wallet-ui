@@ -14,7 +14,7 @@ const Header: FC<HeaderProps> = (props) => {
     router.back();
   }
   return (
-    <div className="flex items-center p-6 relative">
+    <div className="flex items-center p-6 mt-6 relative">
       <div className="inline-flex w-1/3 justify-start">
         {showBack ? (
           <img

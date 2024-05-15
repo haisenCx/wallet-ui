@@ -50,7 +50,7 @@ function ContactItem({
 }) {
   return (
     <div
-      className="w-full flex items-center hover:cursor-pointer hover:bg-gray-500/30 transition-all rounded-lg"
+      className="w-full flex items-center transition-all rounded-lg"
       onClick={
         () =>
           clickEvent({
@@ -94,7 +94,8 @@ function ContactBox({
           list: "max-h-[300px] pr-2 overflow-scroll",
         }}
         itemClasses={{
-          base: "px-0"
+          base: "px-0 transition-all active:bg-[#819DF599] flex items-center justify-between py-4 hover:bg-[#819DF54D] cursor-pointer px-4 rounded-2xl",
+          wrapper: "hover-none"
         }}
         label="contact_list"
         items={listData}

@@ -28,7 +28,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       >
         <div
           id={"wallet-ui"}
-          className={"layout sm:h-[900px] h-full rounded-lg relative"}
+          className={"layout h-full rounded-lg relative"}
         >
           <Providers>{children}</Providers>
           <Toaster />
