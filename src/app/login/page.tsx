@@ -79,6 +79,8 @@ const LoginPage = () => {
       setLoading(false);
       router.push("/dashboard");
     } catch (error: any) {
+      setLoading(false);
+      console.error(error)
       // message.error((error as Error).message)
       return;
     }
