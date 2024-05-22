@@ -13,7 +13,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { classNames } from "@/utils/classNames";
 import { useRouter } from "next/navigation";
@@ -97,6 +97,13 @@ const Token: FC<ITokenProps> = (props) => {
       ? (+currentToken?.usdValue / +currentToken?.amount) * +amount
       : 0
     : 0;
+  // 页面默认选择
+  useEffect(()=>{
+    const find = calcTokens.find(item => (Number(item?.amount) > 0));
+    if (find) {
+      setCurrentToken(find);
+    }
+    },[calcTokens])
 
   function handleTransferAll() {
     if (currentToken) {

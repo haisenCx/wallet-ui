@@ -141,6 +141,8 @@ export default function DashBoardLayout() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="p-2 pt-0">
         {isHoldings ? <Holdings /> : <Transactions list={transactionlist} />}
       </div>
     </MainLayout>

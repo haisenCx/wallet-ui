@@ -10,6 +10,8 @@ import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { JSONBigInt } from "@/server/js/common_utils";
 import { useAddress } from "@/store/useAddress";
 import { CalcWalletAddress } from "@/api/auth";
+import { useRouter } from "next/navigation";
+import Toast from "@/utils/toast";
 
 interface ILoadingContextProps {
   loading: boolean;
@@ -17,15 +19,16 @@ interface ILoadingContextProps {
 }
 export const LoadingContext = createContext<ILoadingContextProps>({
   loading: false,
-  setLoading: () => { },
+  setLoading: () => {},
 });
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState("loading...");
   const [inited, setInited] = useState(false);
 
-  const { setMpcAddress, setAddressList, setCurrentAddress, } = useAddress(
+  const { setMpcAddress, setAddressList, setCurrentAddress } = useAddress(
     (state) => state
   );
 
@@ -66,7 +69,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       if (localStorage.getItem("authorization")) {
         Global.account.setAuthorization(Global.authorization);
         Global.account.setBlockchainRpc(chain[0].rpcApi!);
-        await Global.account.initAccount(JSONBigInt.stringify(localStorage.getItem("mpc_key_local")));
+        await Global.account.initAccount(
+          JSONBigInt.stringify(localStorage.getItem("mpc_key_local"))
+        );
         const mpcAddress = await Global.account.getOwnerAddress();
         setMpcAddress(mpcAddress);
         const res = await CalcWalletAddress(mpcAddress);
@@ -78,10 +83,18 @@ export function Providers({ children }: { children: React.ReactNode }) {
       localStorage.setItem("wallet_chains", JSON.stringify(chain));
       setLoading(false);
       setInited(true);
+      // 如果未注册，到注册页面去
+      if (!localStorage.getItem("mpc_key_local")) {
+        Toast("Please register first");
+        router.replace("/register");
+        return;
+      }
       // 如果未登录，先到首页去
-      // if (!Global.authorization) {
-      //   router.replace("/");
-      // }
+      if (!Global.authorization) {
+        Toast("Please login first");
+        router.replace("/login");
+        return;
+      }
     }
     init();
   }, []);

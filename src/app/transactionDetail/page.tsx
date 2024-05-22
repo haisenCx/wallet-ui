@@ -9,7 +9,11 @@ import { useMemo } from "react";
 import { ITx } from "../dashboard/page";
 import dayjs from "dayjs";
 import Person from "@/components/Person";
-
+import { useAddress } from "@/store/useAddress";
+import utc  from 'dayjs/plugin/utc';
+import timezone  from 'dayjs/plugin/timezone';
+dayjs.extend(utc)
+dayjs.extend(timezone)
 type AmountProps = { num: number | string } & StyleType;
 
 type StatusProps = {
@@ -17,15 +21,15 @@ type StatusProps = {
   time: string;
 } & StyleType;
 
-const Status = ({ type = "success", time, className }: StatusProps) => {
+const Status = ({ type, time, className }: StatusProps) => {
   const map = {
     success: {
       style: Style.success,
-      text: "Failed",
+      text: "Succeed",
     },
     fail: {
       style: Style.fail,
-      text: "Succeed",
+      text: "Failed",
     },
     pending: {
       style: Style.pending,
@@ -42,6 +46,7 @@ const Status = ({ type = "success", time, className }: StatusProps) => {
 };
 
 export default function TransactionDetail() {
+  const { currentAddress} = useAddress();
   const transactionDetail = useMemo(() => {
     let _data = sessionStorage.getItem("transaction_detail");
     if (_data) {
@@ -64,18 +69,30 @@ export default function TransactionDetail() {
   }
 
   const time = transactionDetail?.timeStamp
-    ? dayjs(transactionDetail?.timeStamp * 1000).toLocaleString()
+    ? dayjs(transactionDetail?.timeStamp * 1000).utc().format("HH:mm MMM DD YYYY").toLocaleString()
     : "";
-
+  let inName = "Other";
+  let outName = "Other";
+  if (transactionDetail) {
+    if (currentAddress === transactionDetail.from) {
+      outName = "You";
+    }
+    if (currentAddress === transactionDetail.to) {
+      inName = "You";
+    }
+  }
+let currentStatus : StatusProps['type'] = transactionDetail.status == 2 ? "fail" : 
+                   transactionDetail.status == 1 ? "success" : 
+                   transactionDetail.status == 3 ? "pending" : "success" ;
   return (
     <MainLayout showMenu={false}>
       <div className="flex flex-col h-full">
         <Header title="Transaction Detail" showBack />
         <div className={classNames(Style.transaction)}>
           <div className="py-4">
-            <Status className="mb-4" type={"success"} time={time}></Status>
+            <Status className="mb-4" type={currentStatus} time={time}></Status>
             <div className="flex items-center justify-center border-b-1 border-gray-500/30 px-4 pb-4">
-              <Person name={"You"} address={transactionDetail.from} />
+              <Person name={outName} address={transactionDetail.from} />
               <div className="flex-1 flex flex-col items-center">
                 <p className="text-[#4FAAEB] text-sm font-bold">{`${transactionDetail.value} ${transactionDetail.tokenName}`}</p>
                 <svg
@@ -93,7 +110,7 @@ export default function TransactionDetail() {
 
                 <p className="text-[#819DF5] text-xs">Direct Transfer</p>
               </div>
-              <Person name={"Other"} address={transactionDetail.to} />
+              <Person name={inName} address={transactionDetail.to} />
             </div>
           </div>
           <div className="flex-1">
