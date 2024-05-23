@@ -25,7 +25,7 @@ export async function complexTransfer(ops: any[]) {
   let _gasPrice = 0;
   let feeToken = null;
   let chainId = 0;
-
+  const gasLimit = 1000000;
   let chains: IChain[] = [];
   if (chainsData) {
     chains = JSON.parse(chainsData);
@@ -309,9 +309,10 @@ export async function complexTransfer(ops: any[]) {
     walletAddress,
     entryPointAddress,
     _gasPrice,
+    gasLimit,
     params,
     tokenPaymasterAddress,
-    payGasFeeTokenAddress
+    payGasFeeTokenAddress,
   );
 
   Global.account.setBlockchainRpc(rpc);
