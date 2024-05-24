@@ -29,7 +29,7 @@ import Person from "@/components/Person";
 import { LoadingContext } from "@/app/providers";
 import { IInternalTransferData, TxTypeEnum } from "@/api/types/transactionRecord";
 import { useRouter } from "next/navigation";
-
+import { BigNumber, ethers } from "ethers";
 function Tab({
   name,
   address,
@@ -191,6 +191,7 @@ export default function Confirmation() {
       receiveAddress: transferData.address,
       amount: transferData.amount!,
       gasPrice: gasPriceRef.current + "",
+      gasLimit:1000000,
       tokenPaymasterAddress: currentGasFee.token?.tokenPaymasterAddress || "",
       payGasFeeTokenAddress: currentGasFee?.token?.address || "",
       tokenAddress: transferData.token?.address || "",

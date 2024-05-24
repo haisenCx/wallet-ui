@@ -83,18 +83,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       localStorage.setItem("wallet_chains", JSON.stringify(chain));
       setLoading(false);
       setInited(true);
-      // 如果未注册，到注册页面去
-      if (!localStorage.getItem("mpc_key_local")) {
-        Toast("Please register first");
-        router.replace("/register");
-        return;
-      }
-      // 如果未登录，先到首页去
-      if (!Global.authorization) {
-        Toast("Please login first");
-        router.replace("/login");
-        return;
-      }
+
     }
     init();
   }, []);
