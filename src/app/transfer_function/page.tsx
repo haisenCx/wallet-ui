@@ -48,6 +48,7 @@ export default function Transfer_Function() {
         setAddress={setAddress}
         setChain={setChain}
       />
+      <div className="h-6"></div>
       <Contact confirmContact={confirmContact} />
       <div className="absolute bottom-8 left-8 right-8">
         <Button
