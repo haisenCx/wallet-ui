@@ -25,7 +25,7 @@ export async function complexTransfer(ops: any[]) {
   let _gasPrice = 0;
   let feeToken = null;
   let chainId = 0;
-
+  const gasLimit = 1000000;
   let chains: IChain[] = [];
   if (chainsData) {
     chains = JSON.parse(chainsData);
@@ -66,7 +66,7 @@ export async function complexTransfer(ops: any[]) {
         tokenIn: finTokenIn?.address!,
         tokenOut: finTokenOut?.address!,
         amount: swap_in,
-        // recipient: walletAddress,
+        recipient: walletAddress,
       };
       // 目前仅支持用mumbai的swt作为手续费，若swt不足，则提示手续费不足，然后结束
       const res = await GetEstimateFee("1");
@@ -309,9 +309,10 @@ export async function complexTransfer(ops: any[]) {
     walletAddress,
     entryPointAddress,
     _gasPrice,
+    gasLimit,
     params,
     tokenPaymasterAddress,
-    payGasFeeTokenAddress
+    payGasFeeTokenAddress,
   );
 
   Global.account.setBlockchainRpc(rpc);

@@ -69,8 +69,8 @@ dependencies:
     specifier: ^1.1.3
     version: 1.1.3
   sw-fe-sdk:
-    specifier: 0.0.6-beta.1710840536
-    version: 0.0.6-beta.1710840536
+    specifier: 0.0.6-beta.1714925975
+    version: 0.0.6-beta.1714925975
   tailwind-merge:
     specifier: ^2.2.0
     version: 2.2.1
@@ -8124,8 +8124,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  /sw-fe-sdk@0.0.6-beta.1710840536:
-    resolution: {integrity: sha512-LookWwl5bIMb48pVsvoLa4cFzfMs1Rrm02P90MhyHtb+w9kDYNFhaNVfypzkpX00ahWpFhB7h8avC/dQ3DInNg==}
+  /sw-fe-sdk@0.0.6-beta.1714925975:
+    resolution: {integrity: sha512-K5kEQOsha1C6Z0XdTk9ZVcjhmdlsc2n7aCDtITDcqVDypHdNNUNaWwfJjZzyd1pZgmH4z2rkIM5Y3y5uf/HPig==}
     dependencies:
       '@ethersproject/bignumber': 5.7.0
       '@ethersproject/bytes': 5.7.0
