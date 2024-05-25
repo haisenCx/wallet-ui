@@ -183,7 +183,7 @@ export default function Contact({ confirmContact }: Props) {
 
   return (
     <div className="w-full">
-      <div className="flex px-6 justify-between my-4">
+      <div className="flex px-6 justify-between mt-4">
         <h1 className="font-bold">Or Choose Contact</h1>
         <AddIcon
           onClick={() => {

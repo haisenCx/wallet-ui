@@ -166,7 +166,7 @@ const DemandPage = () => {
                         {functionData.map((item) => (
                             <div
                                 key={item.id}
-                                className="flex flex-col items-center mb-1"
+                                className="flex flex-col items-center mb-1 cursor-pointer"
                                 onClick={item.func}
                             >
                                 <div

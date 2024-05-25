@@ -8,6 +8,7 @@ export interface ITransferParams {
   walletAddress: string;
   entryPointAddress: string;
   gasPrice: string;
+  gasLimit: BigNumber|string|number;
   // 接收地址
   receiveAddress: string;
   amount: string;
@@ -22,6 +23,7 @@ export async function transfer(params: ITransferParams) {
     walletAddress,
     entryPointAddress,
     gasPrice,
+    gasLimit,
     receiveAddress,
     amount,
     tokenPaymasterAddress,
@@ -29,7 +31,6 @@ export async function transfer(params: ITransferParams) {
     tokenAddress,
   } = params;
   let op;
-
   const _gasPrice = ethers.utils.parseEther(gasPrice);
   const _amount = ethers.utils.parseEther(amount);
 
@@ -41,18 +42,20 @@ export async function transfer(params: ITransferParams) {
         walletAddress,
         entryPointAddress,
         gasPrice,
+        gasLimit,
         receiveAddress,
-        _amount
+        _amount,
       );
     } else {
       op = await Global.account.buildTxTransferNativeToken(
         walletAddress,
         entryPointAddress,
         gasPrice,
+        gasLimit,
         receiveAddress,
         _amount,
         tokenPaymasterAddress,
-        payGasFeeTokenAddress
+        payGasFeeTokenAddress,
       );
     }
   } else {
@@ -61,20 +64,22 @@ export async function transfer(params: ITransferParams) {
         walletAddress,
         entryPointAddress,
         gasPrice,
+        gasLimit,
         receiveAddress,
         _amount,
-        tokenAddress
+        tokenAddress,
       );
     } else {
       op = await Global.account.buildTxTransferERC20Token(
         walletAddress,
         entryPointAddress,
         gasPrice,
+        gasLimit,
         receiveAddress,
         _amount,
         tokenAddress,
         tokenPaymasterAddress,
-        payGasFeeTokenAddress
+        payGasFeeTokenAddress,
       );
     }
   }
