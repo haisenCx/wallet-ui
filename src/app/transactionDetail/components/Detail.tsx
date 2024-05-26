@@ -77,7 +77,7 @@ const TransferUserInfo = ({ type = "out" }: TransferUserInfoProps) => {
           <>
           <div>
             <img  className="w-4 mr-2 inline-block" src={img} />
-            <span className="font-bold inline-block" style={{ color }}>{transactionDetail?.value} {transactionDetail?.tokenName}</span>
+            <span className="font-bold inline-block" style={{ color }}>{Number(transactionDetail?.value).toFixed(4)} {transactionDetail?.tokenName}</span>
             <div className="text-right"> ${Number(transactionDetail?.amount).toFixed(2)}</div>
           </div>
            

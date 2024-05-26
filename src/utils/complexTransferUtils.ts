@@ -40,7 +40,7 @@ export async function complexTransfer(ops: any[]) {
 
   let tokenPaymasterAddress = "";
   let payGasFeeTokenAddress = "";
-
+ let TxType = 2
   let _crossChainId = 0;
   for (let i = 0; i < ops.length; i++) {
     const op = ops[i];
@@ -122,6 +122,7 @@ export async function complexTransfer(ops: any[]) {
       });
     }
     if (type === "chain-internal-transfer") {
+        TxType = 2
       const { source_chain_id, source_chain_name, token, amount, receiver } =
         op;
 
@@ -330,7 +331,9 @@ export async function complexTransfer(ops: any[]) {
       txSource: 1,
       userOperationHash: opHase,
       extraData: extraData,
+      TxType
     };
+    debugger;
     const aares = await AATx(txParams);
     if (_crossChainId) {
       await CrossTx({
