@@ -22,7 +22,7 @@ export async function complexTransfer(ops: any[]) {
   let chainsData = localStorage.getItem("wallet_chains");
   let addressListData = localStorage.getItem("wallet_addressList");
   let bundlerApi = "";
-  let _gasPrice = 0;
+  let _gasPrice = BigNumber.from(0);
   let feeToken = null;
   let chainId = 0;
   const gasLimit = 1000000;
@@ -209,14 +209,13 @@ export async function complexTransfer(ops: any[]) {
       const res = await GetEstimateFee("1");
       const { gasPrice, payFeeByToken, chainId: _chainId } = res.body.result;
       feeToken = payFeeByToken.find((t: any) => t.token.name === "SWT").token;
-      _gasPrice = gasPrice;
+      _gasPrice = BigNumber.from(gasPrice);
 
       const findChain = chains.find((c) => c.ID == source_chain_id)!;
       bundlerApi = findChain.bundlerApi;
       chainId = findChain.ID;
       const tokens = findChain?.tokens;
       const findToken = tokens?.find((t) => t.name === token);
-
       walletAddress = addresslist.find(
         (address) => address.chainId == source_chain_id
       )!.walletAddress;
@@ -259,7 +258,7 @@ export async function complexTransfer(ops: any[]) {
             callFunc: "approve",
             callParams: [
               sourceChainSenderAddress,
-              BigNumber.from(amount * Math.pow(10, findToken?.decimal!)),
+              BigNumber.from((amount * Math.pow(10, findToken?.decimal!)).toString()),
             ],
           },
           // function sendMessage(uint64 destinationChainSelector,address receiver,payFeesIn feeToken,address to,uint256 amount) external returns (bytes32 messageId)
@@ -274,7 +273,7 @@ export async function complexTransfer(ops: any[]) {
               destChainReceiverAddress,
               1,
               receiverAddress,
-              BigNumber.from(amount * Math.pow(10, findToken?.decimal!)),
+              BigNumber.from((amount * Math.pow(10, findToken?.decimal!)).toString()),
             ],
           },
         ]
