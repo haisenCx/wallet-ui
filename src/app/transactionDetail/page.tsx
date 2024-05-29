@@ -115,8 +115,11 @@ let currentStatus : StatusProps['type'] = transactionDetail.status == 2 ? "fail"
           </div>
           <div className="flex-1">
             <div className="my-4">
-              {/* <SuccessCrossDetail></SuccessCrossDetail> */}
+                {
+                    transactionDetail.extraInfo.length>1?
+              <SuccessCrossDetail></SuccessCrossDetail>:
               <SuccessDetail></SuccessDetail>
+                }
             </div>
           </div>
         </div>
