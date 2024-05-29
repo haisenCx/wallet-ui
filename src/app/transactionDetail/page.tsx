@@ -10,10 +10,10 @@ import { ITx } from "../dashboard/page";
 import dayjs from "dayjs";
 import Person from "@/components/Person";
 import { useAddress } from "@/store/useAddress";
-import utc  from 'dayjs/plugin/utc';
-import timezone  from 'dayjs/plugin/timezone';
-dayjs.extend(utc)
-dayjs.extend(timezone)
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 type AmountProps = { num: number | string } & StyleType;
 
 type StatusProps = {
@@ -46,7 +46,7 @@ const Status = ({ type, time, className }: StatusProps) => {
 };
 
 export default function TransactionDetail() {
-  const { currentAddress} = useAddress();
+  const { currentAddress } = useAddress();
   const transactionDetail = useMemo(() => {
     let _data = sessionStorage.getItem("transaction_detail");
     if (_data) {
@@ -69,7 +69,10 @@ export default function TransactionDetail() {
   }
 
   const time = transactionDetail?.timeStamp
-    ? dayjs(transactionDetail?.timeStamp * 1000).utc().format("HH:mm MMM DD YYYY").toLocaleString()
+    ? dayjs(transactionDetail?.timeStamp * 1000)
+        .utc()
+        .format("HH:mm MMM DD YYYY")
+        .toLocaleString()
     : "";
   let inName = "Other";
   let outName = "Other";
@@ -81,9 +84,14 @@ export default function TransactionDetail() {
       inName = "You";
     }
   }
-let currentStatus : StatusProps['type'] = transactionDetail.status == 2 ? "fail" : 
-                   transactionDetail.status == 1 ? "success" : 
-                   transactionDetail.status == 3 ? "pending" : "success" ;
+  let currentStatus: StatusProps["type"] =
+    transactionDetail.status == 2
+      ? "fail"
+      : transactionDetail.status == 1
+      ? "success"
+      : transactionDetail.status == 3
+      ? "pending"
+      : "success";
   return (
     <MainLayout showMenu={false}>
       <div className="flex flex-col h-full">
@@ -115,11 +123,11 @@ let currentStatus : StatusProps['type'] = transactionDetail.status == 2 ? "fail"
           </div>
           <div className="flex-1">
             <div className="my-4">
-                {
-                    transactionDetail.extraInfo.length>1?
-              <SuccessCrossDetail></SuccessCrossDetail>:
-              <SuccessDetail></SuccessDetail>
-                }
+              {transactionDetail.extraInfo.length > 1 ? (
+                <SuccessCrossDetail></SuccessCrossDetail>
+              ) : (
+                <SuccessDetail></SuccessDetail>
+              )}
             </div>
           </div>
         </div>
