@@ -77,7 +77,7 @@ const TransferUserInfo = ({ type = "out", data }: TransferUserInfoProps) => {
 
   const swapFee = data?.fee.amount;
   const swapTokenName = data?.fee.token_name;
-  const amount = data?.amount;
+  const amount = Number(data?.amount).toFixed(4)|| Number(transactionDetail?.value).toFixed(4) ;
   const tokenName = data?.token_name || transactionDetail?.tokenName;
   const usdValue = `$ ${Number(transactionDetail?.amount).toFixed(2)}`;
   return (
@@ -118,7 +118,7 @@ const TransferUserInfo = ({ type = "out", data }: TransferUserInfoProps) => {
             <div>
               <img className="w-4 mr-2 inline-block" src={img} />
               <span className="font-bold inline-block" style={{ color }}>
-                {amount || Number(transactionDetail?.value).toFixed(4)}{" "}
+                {amount }{" "}
                 {tokenName || transactionDetail?.tokenName}
               </span>
               {data ? null : (
