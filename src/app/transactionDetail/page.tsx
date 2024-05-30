@@ -108,7 +108,7 @@ export default function TransactionDetail() {
                 name={outName}
                 address={transactionDetail.from}
                 value={isSwap ? transactionDetail.extraInfo[0].amount : null}
-                token={transactionDetail.extraInfo[1].token_name}
+                token={transactionDetail.extraInfo[0].source_token_name}
               />
               {isSwap ? (
                 <div className=" flex items-center relative h-[100px]">
