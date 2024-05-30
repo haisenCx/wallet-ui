@@ -80,7 +80,7 @@ const TransferUserInfo = ({ type = "out", data,price }: TransferUserInfoProps) =
   const swapFee = data?.fee.amount;
   const swapTokenName = data?.fee.token_name;
   const amount = Number(data?.amount).toFixed(4)|| Number(transactionDetail?.value).toFixed(4) ;
-  const tokenName = data?.token_name || transactionDetail?.tokenName;
+  const tokenName = data?.source_token_name||data?.token_name || transactionDetail?.tokenName;
   const usdValue = price ? `$ ${(Number(data?.amount) * price).toFixed(2)}` : `$ ${Number(transactionDetail?.amount).toFixed(2)}`;
 
   console.log(`当前tokenname${data?.source_token_name||data?.token_name},当前usdValue:${usdValue}`);
@@ -124,7 +124,7 @@ const TransferUserInfo = ({ type = "out", data,price }: TransferUserInfoProps) =
               <img className="w-4 mr-2 inline-block" src={img} />
               <span className="font-bold inline-block" style={{ color }}>
                 {amount }{" "}
-                {tokenName || transactionDetail?.tokenName}
+                {tokenName}
               </span>
               
                 <div className="text-right">
