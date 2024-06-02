@@ -25,7 +25,7 @@ export async function complexTransfer(ops: any[]) {
   let _gasPrice = BigNumber.from(0);
   let feeToken = null;
   let chainId = 0;
-  const gasLimit = 1000000;
+  const gasLimit = BigNumber.from("1000000");
   let chains: IChain[] = [];
   if (chainsData) {
     chains = JSON.parse(chainsData);
