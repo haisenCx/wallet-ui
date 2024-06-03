@@ -17,7 +17,7 @@ export default function Transfer_Function() {
       Toast("The address format is incorrect")
       return
     }
-
+    debugger;
     if (address && chain) {
       const _cl = localStorage.getItem("contact_list")
       const contactList = _cl ? JSON.parse(_cl) : [];
@@ -27,6 +27,7 @@ export default function Transfer_Function() {
       sessionStorage.setItem("transfer_name", contact?.name || "")
       sessionStorage.setItem("transfer_address", address);
       sessionStorage.setItem("transfer_chainId", chain.ID.toString());
+      sessionStorage.setItem("transfer_chainName", chain.name);
       router.push("/chooseToken");
     }
   }
