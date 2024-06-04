@@ -89,7 +89,7 @@ export default function ChooseToken() {
             </div>
           </div>
         </div>
-        <Token tokens={transferData.tokens} balances={transferData.balances} />
+        <Token tokens={transferData.tokens} balances={transferData.balances} toAddress={transferData.address} />
       </div>
     </MainLayout>
   );

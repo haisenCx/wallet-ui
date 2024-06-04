@@ -12,7 +12,32 @@ import { LoadingContext } from "../providers";
 import { getBalance } from "@/api/assets";
 import { getTxDetail } from "@/api/assets";
 import Title from "@/components/Header";
-
+export type ExtraInfo = {
+  amount: string;
+  chain_id: number;
+  chain_name: string;
+  create_date: string;
+  dex?: string;
+  fee: Fee;
+  from_address: string;
+  source_token_id?: number;
+  source_token_name?: string;
+  swap_in?: string;
+  swap_out?: string;
+  target_token_id?: number;
+  target_token_name?: string;
+  to_address: string;
+  token_name:string;
+  to_name: string;
+  type: string;
+};
+export type Fee = {
+  amount: string;
+  chain_id: number;
+  chain_name: string;
+  token_id: number;
+  token_name: string;
+};
 export interface ITx {
   chainName: string;
   tokenId: number;
@@ -33,7 +58,7 @@ export interface ITx {
   };
   transactionType: number;
   tradeDirection: number;
-  extraInfo: string;
+  extraInfo: ExtraInfo[];
 }
 
 export default function DashBoardLayout() {

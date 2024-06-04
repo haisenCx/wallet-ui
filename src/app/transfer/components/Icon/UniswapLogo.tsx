@@ -2,8 +2,8 @@
 
 export default function UniswapLogo() {
 
-  return <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-    <rect x="0.38855" y="0.388672" width="22.5" height="22.5" rx="11.25" fill="url(#pattern_uniswap)" />
+  return <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+    <rect x="0.38855" y="0.388672" width="36" height="36" rx="36" fill="url(#pattern_uniswap)" />
     <defs>
       <pattern id="pattern_uniswap" patternContentUnits="objectBoundingBox" width="1" height="1">
         <use xlinkHref="#image_uniswap" transform="scale(0.00333333)" />
