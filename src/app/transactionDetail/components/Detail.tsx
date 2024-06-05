@@ -17,7 +17,7 @@ dayjs.extend(timezone);
 type TransferUserInfoProps = {
   type?: "out" | "in" | "text" | "swap";
   data?: ExtraInfo;
-  price?:number;
+  price?: number;
 };
 type TransferDetailInfoProps = {
   type?: "success" | "pending";
@@ -25,15 +25,19 @@ type TransferDetailInfoProps = {
     label: string;
     value: string;
   }[];
-  icon?:string;
-  price?:number;
+  icon?: string;
+  price?: number;
 };
 
 type SuccessCrossDetailProps = {} & StyleType;
 type ErrorDetailProps = {} & StyleType;
 type SuccessDetailProps = {} & StyleType;
 
-const TransferUserInfo = ({ type = "out", data,price }: TransferUserInfoProps) => {
+const TransferUserInfo = ({
+  type = "out",
+  data,
+  price,
+}: TransferUserInfoProps) => {
   const map = {
     out: { img: "/imgs/out.png", color: "#FF8266" },
     swap: { img: "/imgs/out.png", color: "#FFF" },
@@ -42,6 +46,7 @@ const TransferUserInfo = ({ type = "out", data,price }: TransferUserInfoProps) =
   };
   const { img, color } = map[type];
   const { currentAddress } = useAddress();
+  debugger;
   const transactionDetail = useMemo(() => {
     let _data = sessionStorage.getItem("transaction_detail");
     if (_data) {
@@ -59,13 +64,15 @@ const TransferUserInfo = ({ type = "out", data,price }: TransferUserInfoProps) =
 
   const findTokenInfo = (tokenName: string): IToken | undefined => {
     for (const chain of walletChains) {
-      const token = chain.tokens.find(t => t.name === tokenName);
+      const token = chain.tokens.find((t) => t.name === tokenName);
       if (token) return token;
     }
     return undefined;
   };
 
-  const tokenInfo = data ? findTokenInfo(data.source_token_name || data.fee.token_name) : undefined;
+  const tokenInfo = data
+    ? findTokenInfo(data.source_token_name || data.fee.token_name)
+    : undefined;
 
   let name = "Other"; // Default to "Other"
   if (transactionDetail) {
@@ -79,15 +86,31 @@ const TransferUserInfo = ({ type = "out", data,price }: TransferUserInfoProps) =
 
   const swapFee = data?.fee.amount;
   const swapTokenName = data?.fee.token_name;
-  const amount = Number(data?.amount).toFixed(4)|| Number(transactionDetail?.value).toFixed(4) ;
-  const tokenName = data?.source_token_name||data?.token_name || transactionDetail?.tokenName;
-  const usdValue = price ? `$ ${(Number(data?.amount) * price).toFixed(2)}` : `$ ${Number(transactionDetail?.amount).toFixed(2)}`;
+  const tokenName =
+    data?.source_token_name || data?.token_name || transactionDetail?.tokenName;
+  const amount = !isNaN(Number(data?.amount))
+    ? Number(data?.amount).toFixed(4)
+    : !isNaN(Number(transactionDetail?.value))
+    ? Number(transactionDetail?.value).toFixed(4)
+    : "0.0000";
+  const usdValue =
+    price && !isNaN(Number(data?.amount))
+      ? `$ ${(Number(data?.amount) * price).toFixed(2)}`
+      : transactionDetail && !isNaN(Number(transactionDetail?.amount))
+      ? `$ ${Number(transactionDetail?.amount).toFixed(2)}`
+      : "$ 0.00";
 
-  console.log(`当前tokenname${data?.source_token_name||data?.token_name},当前usdValue:${usdValue}`);
-  
+  console.log(
+    transactionDetail,
+    amount,
+    `,,,,,当前tokenname${
+      data?.source_token_name || data?.token_name
+    },当前usdValue:${usdValue}`
+  );
+
   return (
     <div className="flex flex-row items-center w-full bg-[#819DF533] justify-between px-4 py-2 rounded-lg">
-      {type==='swap' ? (
+      {type === "swap" ? (
         <UniswapLogo></UniswapLogo>
       ) : (
         <User
@@ -123,13 +146,10 @@ const TransferUserInfo = ({ type = "out", data,price }: TransferUserInfoProps) =
             <div>
               <img className="w-4 mr-2 inline-block" src={img} />
               <span className="font-bold inline-block" style={{ color }}>
-                {amount }{" "}
-                {tokenName}
+                {amount} {tokenName}
               </span>
-              
-                <div className="text-right">
-                  {usdValue}
-                </div>
+
+              <div className="text-right">{usdValue}</div>
             </div>
           </>
         )}
@@ -138,12 +158,20 @@ const TransferUserInfo = ({ type = "out", data,price }: TransferUserInfoProps) =
   );
 };
 
-const TransferDetailInfo = ({ type, data = [], icon, price }: TransferDetailInfoProps) => {
+const TransferDetailInfo = ({
+  type,
+  data = [],
+  icon,
+  price,
+}: TransferDetailInfoProps) => {
   const [transactionFees, setTransactionFees] = useState<string>("");
 
   useEffect(() => {
     const fetchFees = async () => {
-      const feeItem = data.find(item => item.label === "Transaction fees");
+      const feeItem = data.find((item) => item.label === "Transaction fees");
+      if (!price) {
+          setTransactionFees(feeItem?.value||"");
+      }
       if (feeItem && price) {
         const feeAmount = parseFloat(feeItem.value.split(" ")[0]);
         const calculatedFee = (price * feeAmount).toFixed(2);
@@ -151,12 +179,13 @@ const TransferDetailInfo = ({ type, data = [], icon, price }: TransferDetailInfo
       }
     };
     fetchFees();
+    debugger;
   }, [data, price]);
 
   return (
     <div className="px-4 py-1 flex flex-row">
       <div className="w-9 mr-8 bg-cover flex justify-center items-center">
-        <Arrow type={type} src={icon}></Arrow>
+        <Arrow type={type} src={icon||""}></Arrow>
       </div>
       <div className="flex-1 flex flex-col items-center py-1">
         <div>
@@ -175,7 +204,11 @@ const TransferDetailInfo = ({ type, data = [], icon, price }: TransferDetailInfo
                       {formatAddress(item.value)}
                     </span>
                   ) : (
-                    <span>{item.label === "Transaction fees" ? transactionFees : item.value}</span>
+                    <span>
+                      {item.label === "Transaction fees"
+                        ? transactionFees
+                        : item.value}
+                    </span>
                   )}
                 </div>
               );
@@ -186,7 +219,6 @@ const TransferDetailInfo = ({ type, data = [], icon, price }: TransferDetailInfo
     </div>
   );
 };
-
 
 export const ErrorDetail = ({}: ErrorDetailProps) => {};
 export const SuccessDetail = ({ className }: SuccessDetailProps) => {
@@ -224,7 +256,7 @@ export const SuccessDetail = ({ className }: SuccessDetailProps) => {
   return (
     <div className={className}>
       <TransferUserInfo></TransferUserInfo>
-      <TransferDetailInfo data={data}></TransferDetailInfo>
+      <TransferDetailInfo data={data} ></TransferDetailInfo>
       <TransferUserInfo type="in"></TransferUserInfo>
     </div>
   );
@@ -248,28 +280,36 @@ export const SuccessCrossDetail = ({ className }: SuccessCrossDetailProps) => {
 
   const [prices, setPrices] = useState<{ [key: string]: number }>({});
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchPrices = async () => {
-      const tokenNames = transactionDetail?.extraInfo.map(info => info.source_token_name || info.token_name) || [];
-      const uniqueTokenNames = tokenNames.filter((value, index, self) => self.indexOf(value) === index);
-      
+      const tokenNames =
+        transactionDetail?.extraInfo.map(
+          (info) => info.source_token_name || info.token_name
+        ) || [];
+      const uniqueTokenNames = tokenNames.filter(
+        (value, index, self) => self.indexOf(value) === index
+      );
+
       const tokenPrices: { [key: string]: number } = {};
       for (const token of uniqueTokenNames) {
         try {
-          const response = await fetch(`https://price-dev.web3idea.xyz/api/v1/coin-price?coinName=${token}`);
+          const response = await fetch(
+            `https://price-dev.web3idea.xyz/api/v1/coin-price?coinName=${token}`
+          );
           const result = await response.json();
           if (result && result.result) {
             tokenPrices[token] = Number(result.result);
           }
         } catch (error) {
-          console.error('Error fetching price:', error);
+          console.error("Error fetching price:", error);
         }
       }
       setPrices(tokenPrices);
 
       // Update extraInfo with USD values
-      const updatedExtraInfo = transactionDetail?.extraInfo.map(info => {
-        const tokenPrice = tokenPrices[info.source_token_name || info.token_name] || 0;
+      const updatedExtraInfo = transactionDetail?.extraInfo.map((info) => {
+        const tokenPrice =
+          tokenPrices[info.source_token_name || info.token_name] || 0;
         const usdValue = (Number(info.amount) * tokenPrice).toFixed(2);
         return {
           ...info,
@@ -283,9 +323,11 @@ export const SuccessCrossDetail = ({ className }: SuccessCrossDetailProps) => {
           ...transactionDetail,
           extraInfo: updatedExtraInfo,
         };
-        sessionStorage.setItem("transaction_detail", JSON.stringify(updatedTransactionDetail));
-        console.log(updatedTransactionDetail,'@@@@@@@@@@@@');
-        
+        sessionStorage.setItem(
+          "transaction_detail",
+          JSON.stringify(updatedTransactionDetail)
+        );
+        console.log(updatedTransactionDetail, "@@@@@@@@@@@@");
       }
     };
 
@@ -294,16 +336,17 @@ export const SuccessCrossDetail = ({ className }: SuccessCrossDetailProps) => {
     }
   }, [transactionDetail]);
 
-  const findTokenIcon = (tokenName: string | undefined ): string | undefined => {
+  const findTokenIcon = (tokenName: string | undefined): string | undefined => {
     for (const chain of walletChains) {
-      const token = chain.tokens.find(t => t.name === tokenName);
+      const token = chain.tokens.find((t) => t.name === tokenName);
       if (token) return token.icon;
     }
     return "";
   };
 
-  const extraInfoData = transactionDetail?.extraInfo.map(info => {
-    const tokenIcon = findTokenIcon(info.token_name||info.source_token_name) || '';
+  const extraInfoData = transactionDetail?.extraInfo.map((info) => {
+    const tokenIcon =
+      findTokenIcon(info.token_name || info.source_token_name) || "";
     return {
       data: [
         {
@@ -312,25 +355,32 @@ export const SuccessCrossDetail = ({ className }: SuccessCrossDetailProps) => {
         },
         {
           label: "Time",
-          value: dayjs((Number(info?.create_date) || 0)).utc().format("HH:mm MMM DD YYYY").toLocaleString(),
+          value: dayjs(Number(info?.create_date) || 0)
+            .utc()
+            .format("HH:mm MMM DD YYYY")
+            .toLocaleString(),
         },
         {
           label: "Transaction hash",
-          value: transactionDetail?.txHash || '',
-        }
+          value: transactionDetail?.txHash || "",
+        },
       ],
       icon: tokenIcon,
-      price: prices[info.source_token_name||info.token_name] || 0
+      price: prices[info.source_token_name || info.token_name] || 0,
     };
   });
 
-
-    
   return (
     <div className={className}>
       <TransferUserInfo
         data={transactionDetail?.extraInfo[0]}
-        price={prices[transactionDetail?.extraInfo?.[0]?.source_token_name||transactionDetail?.extraInfo?.[0]?.token_name ||'']}
+        price={
+          prices[
+            transactionDetail?.extraInfo?.[0]?.source_token_name ||
+              transactionDetail?.extraInfo?.[0]?.token_name ||
+              ""
+          ]
+        }
       ></TransferUserInfo>
       <TransferDetailInfo
         data={extraInfoData?.[0]?.data}
@@ -346,9 +396,14 @@ export const SuccessCrossDetail = ({ className }: SuccessCrossDetailProps) => {
       <TransferUserInfo
         type="in"
         data={transactionDetail?.extraInfo[1]}
-        price={prices[transactionDetail?.extraInfo?.[1]?.source_token_name||transactionDetail?.extraInfo?.[1]?.token_name ||'']}
+        price={
+          prices[
+            transactionDetail?.extraInfo?.[1]?.source_token_name ||
+              transactionDetail?.extraInfo?.[1]?.token_name ||
+              ""
+          ]
+        }
       ></TransferUserInfo>
     </div>
   );
 };
-

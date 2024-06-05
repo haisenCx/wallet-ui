@@ -9,7 +9,7 @@ export default function Person({
   name: string;
   address: string;
   value?:string |null;
-  token: string | undefined;
+  token: string | undefined|null;
 }) {
   return (
     <div className="flex flex-col items-center">

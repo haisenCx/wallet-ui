@@ -417,6 +417,10 @@ const confirmTx = async (detail: TransferInfo) => {
       setLoading(true);
       const tran = await complexTransfer(detail.ops);
       setLoading(false);
+      if (tran.error) {
+      Toast(tran.error.message || "something wrong!");
+      return
+      }
       router.push("/dashboard");
     }
   };
@@ -430,7 +434,7 @@ const confirmTx = async (detail: TransferInfo) => {
               name={"You"}
               address={transferData.chainAddress || ""}
               value={isSwap ? transferInfo?.ops?.[0].swap_in : null}
-              token={transferInfo?.ops?.[0].source_token}
+              token={isSwap ? transferInfo?.ops?.[0].source_token: null}
             />
             {isSwap ? (
               <div className=" flex items-center relative h-[100px]">
@@ -491,7 +495,7 @@ const confirmTx = async (detail: TransferInfo) => {
               name={transferData?.toName || "New Friend"}
               address={transferData.address || ""}
               value={isSwap ? transferInfo?.ops?.[1].amount : null}
-              token={transferInfo?.ops?.[1].token}
+              token={isSwap ? transferInfo?.ops?.[1].token: null}
             />
           </div>
 
@@ -503,16 +507,12 @@ const confirmTx = async (detail: TransferInfo) => {
                   name={"You"}
                   address={transferData.chainAddress || ""}
                   amount={
-                    Number(transferInfo?.ops?.[0].swap_in).toFixed(4) ||
-                    transferData?.amount ||
-                    ""
-                  }
+                   isSwap ?Number(transferInfo?.ops?.[0].swap_in).toFixed(4):
+                    transferData?.amount ||""}
                   tokenName={
-                    transferInfo?.ops?.[0].source_token ||
-                    transferData?.token?.name ||
-                    ""
+                    isSwap ? transferInfo?.ops?.[0].source_token:transferData?.token?.name || ""
                   }
-                  coinValue={transferInfo?.ops?.[0].usdValue || ""}
+                  coinValue={isSwap ? transferInfo?.ops?.[0].usdValue || "" :""}
                 />
               </div>
               {isSwap ? (
@@ -550,7 +550,7 @@ const confirmTx = async (detail: TransferInfo) => {
                   address={transferData.address || ""}
                   tokenName={transferData?.token?.name || ""}
                   amount={transferData?.amount || ""}
-                  coinValue={transferInfo?.ops?.[1].usdValue || ""}
+                  coinValue={isSwap ? transferInfo?.ops?.[1].usdValue || "" :""}
                 />
               </div>
             </div>
