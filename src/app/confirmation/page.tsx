@@ -111,6 +111,7 @@ interface IAATxParams {
   txSource: number;
   userOperationHash: string;
   extraData: IInternalTransferData[];
+  txType:number;
 }
 
 function AmountPlaneItem({
@@ -338,6 +339,7 @@ export default function Confirmation() {
               },
             },
           ],
+          txType:2,
         };
         const aares = await AATx(txParams);
         if (aares.body.result) {
