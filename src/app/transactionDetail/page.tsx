@@ -94,8 +94,8 @@ export default function TransactionDetail() {
       ? "pending"
       : "success";
   let isSwap =
-    transactionDetail.extraInfo.length > 1 &&
-    transactionDetail.extraInfo[0].type === "swap";
+    transactionDetail?.extraInfo?.length > 1 &&
+    transactionDetail?.extraInfo[0]?.type === "swap";
   return (
     <MainLayout showMenu={false}>
       <div className="flex flex-col h-full">
@@ -108,7 +108,7 @@ export default function TransactionDetail() {
                 name={outName}
                 address={transactionDetail.from}
                 value={isSwap ? transactionDetail.extraInfo[0].amount : null}
-                token={transactionDetail.extraInfo[0].source_token_name}
+                token={isSwap ? transactionDetail.extraInfo[0].source_token_name: null}
               />
               {isSwap ? (
                 <div className=" flex items-center relative h-[100px]">
@@ -168,13 +168,13 @@ export default function TransactionDetail() {
                 name={inName}
                 address={transactionDetail.to}
                 value={isSwap ? transactionDetail.extraInfo[1].amount : null}
-                token={transactionDetail.extraInfo[1].token_name}
+                token={isSwap ?transactionDetail.extraInfo[1].token_name: null}
               />
             </div>
           </div>
           <div className="flex-1">
             <div className="my-4">
-              {transactionDetail.extraInfo.length > 1 ? (
+              {transactionDetail?.extraInfo?.length > 1 ? (
                 <SuccessCrossDetail></SuccessCrossDetail>
               ) : (
                 <SuccessDetail></SuccessDetail>

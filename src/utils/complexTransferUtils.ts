@@ -345,5 +345,5 @@ export async function complexTransfer(ops: any[]) {
       Toast("Transfer Success");
     }
   }
-  // return op;
+  return res.body;
 }
