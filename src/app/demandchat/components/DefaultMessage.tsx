@@ -6,7 +6,7 @@ interface IDefaultMessageProps {
 }
 
 const defaultCommands = [
-  "I want to transfer 0.1 SWT to 0x5134F00C95b8e794db38E1eE39397d8086cee7Ed on mumbai",
+  "I want to transfer 0.1 SWT to 0x5134F00C95b8e794db38E1eE39397d8086cee7Ed on Fuji",
   "I want to stake my balance",
   "I want to trade SWT with 5% return",
   // 'I want to transfer 1USDC to 0x567a5c7c6812bf9a8fbb048f310f3707637e454e on target chain mumbai',
